@@ -11,3 +11,6 @@ Long/**/*.metadata.json
 Shorts/**/*.mp4
 Shorts/**/*.jpg
 Shorts/**/*.metadata.json
+
+# System Files
+utility/
