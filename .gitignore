@@ -1,0 +1,13 @@
+# Authentication & State Files
+client_secret.json
+token.pickle
+*.json
+*.pickle
+
+# Large media files and metadata from the 'Long' and 'Shorts' folders
+Long/**/*.mp4
+Long/**/*.jpg
+Long/**/*.metadata.json
+Shorts/**/*.mp4
+Shorts/**/*.jpg
+Shorts/**/*.metadata.json
