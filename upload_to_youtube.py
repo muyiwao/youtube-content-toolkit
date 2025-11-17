@@ -13,7 +13,7 @@ from google.auth.transport.requests import Request
 # ------------------------------------------
 # CONFIGURATION
 # ------------------------------------------
-ROOT_PATH = r"C:\Users\Muy\MUYVERSE DOWNLOADS"
+ROOT_PATH = r"C:\Project_Works\youtube-content-toolkit"
 SCOPES = ["https://www.googleapis.com/auth/youtube.upload"]
 CLIENT_SECRET_FILE = os.path.join(ROOT_PATH, "client_secret.json")
 TOKEN_FILE = os.path.join(ROOT_PATH, "token.pickle")
@@ -23,18 +23,35 @@ TOKEN_FILE = os.path.join(ROOT_PATH, "token.pickle")
 # ------------------------------------------
 def get_authenticated_service():
     creds = None
+
+    # Load local token if exists
     if os.path.exists(TOKEN_FILE):
         with open(TOKEN_FILE, "rb") as token:
             creds = pickle.load(token)
+
+    # If no valid credentials → force login
     if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file(CLIENT_SECRET_FILE, SCOPES)
+        try:
+            if creds and creds.expired and creds.refresh_token:
+                # Try refresh normally
+                creds.refresh(Request())
+            else:
+                # Force new login
+                raise Exception("Force OAuth Re-login")
+
+        except Exception:
+            print("🔐 Performing fresh Google OAuth login...")
+            flow = InstalledAppFlow.from_client_secrets_file(
+                CLIENT_SECRET_FILE, SCOPES
+            )
             creds = flow.run_local_server(port=0)
+
+        # Store the new token
         with open(TOKEN_FILE, "wb") as token:
             pickle.dump(creds, token)
+
     return build("youtube", "v3", credentials=creds)
+
 
 # ------------------------------------------
 # TEXT CLEANING UTILITIES
