@@ -9,11 +9,14 @@ from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
+from pathlib import Path
 
 # ------------------------------------------
 # CONFIGURATION
-# ------------------------------------------
-ROOT_PATH = r"C:\Project_Works\youtube-content-toolkit"
+# ------------------------------------------ROOT_PATH = r"C:\Project_Works\youtube-content-toolkit"
+
+# Get the project root (directory where this script resides)
+ROOT_PATH = Path(__file__).resolve().parent
 SCOPES = ["https://www.googleapis.com/auth/youtube.upload"]
 CLIENT_SECRET_FILE = os.path.join(ROOT_PATH, "client_secret.json")
 TOKEN_FILE = os.path.join(ROOT_PATH, "token.pickle")
